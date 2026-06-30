@@ -1,0 +1,62 @@
+# Redrob Hackathon — Submission Metadata
+
+team_name: "Syna Shah"
+
+primary_contact:
+  name: "Syna Shah"
+  email: "synadshah2230@gmail.com"
+  phone: "+91-7506713418"   # fill in your actual phone number
+
+team_members:
+  - name: "Syna Shah"
+    email: "synadshah2230@gmail.com"
+    role: "Solo"
+
+github_repo: "https://github.com/synadshah2213/redrob-ranker"
+
+sandbox_link: "https://redrob-ranker-bkekceyrbncc9dd5amqj5f.streamlit.app"
+
+reproduce_command: "python rank.py --candidates ./data/candidates.jsonl --out ./submission.csv"
+
+compute:
+  platform: "MacBook Pro"
+  cpu_cores: 8                 # update if you know your actual core count
+  ram_gb: 16                   # update if different
+  python_version: "3.13"
+  os: "macOS"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude for architecture design, debugging, and code generation across
+  the full pipeline (honeypot detection, fit scoring, availability scoring,
+  ranking logic, and the Streamlit sandbox). All design decisions, dataset
+  interpretation, and final logic were reviewed and directed by me. No
+  candidate data was sent to any external LLM API during ranking — the
+  ranking step itself is fully local and uses no network calls.
+
+methodology_summary: |
+  Three-layer ranking system. Layer 1 detects honeypot/impossible profiles
+  (e.g. expert-level skills with zero usage duration, career history
+  inconsistencies) and forces them to near-zero score. Layer 2 scores JD fit
+  using career history descriptions and skills with verified usage duration,
+  rather than raw skill-list keyword matching — explicitly penalizing
+  services-only career backgrounds and unrelated technical domains per the
+  JD's stated disqualifiers. Layer 3 applies a behavioral availability
+  multiplier built from Redrob platform signals (recency of activity,
+  recruiter response rate, notice period, GitHub activity, verified contact
+  info), since a strong on-paper candidate who is unresponsive or inactive is
+  not actually hireable. Final score = Fit x Availability. Runtime is ~15
+  seconds for 100K candidates on CPU, well within compute constraints.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
